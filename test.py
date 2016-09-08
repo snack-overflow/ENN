@@ -1,7 +1,7 @@
 import time
 start_time = time.time()
 import sqlite3
-conn = sqlite3.connect('example.db')
+conn = sqlite3.connect('top500.db')
 import pickle
 import math
 # c= conn.cursor()
@@ -20,67 +20,87 @@ import math
 #         print
 # conn.commit()
 
+def getRMSE(list1,list2):
+    error=0
+    for i in range(len(list1)):
+        error+=math.pow(list1[i]-list2[i],2)
+    error=error/len(list1)
+    error=math.sqrt(error)        
+    return error
+
+
+
+
 
 def getCorrelation(user_i="",user_j=""):
-    c= conn.cursor()
-    c.execute("SELECT A.movie_id ,A.user_id `A_user`, B.user_id `B_user`, A.time `A_time`, B.time `B_time`, A.review `A_review`, B.review `B_review` from (select * from reviews where user_id="+str(user_i)+") as A join (select * from reviews where user_id="+str(user_j)+") as B on A.movie_id=B.movie_id")
-    all_results = c.fetchall()
-    conn.commit()
-    #print all_results
-    avg_ratings = pickle.load(open("user_avg_rating","rb"))
-    mu_i = avg_ratings[int(user_i)]
-    mu_j = avg_ratings[int(user_j)]
-    M = len(all_results)
-    sigma_i =0
-    sigma_j = 0
-    E = 0
-    for row in all_results:
-        del_t = -abs(row[3]-row[4])
-        E += (row[5] - mu_i) * (row[6] - mu_j)*math.exp(del_t/495)
-        sigma_i += math.pow((row[5] - mu_i),2)
-        sigma_j += math.pow((row[6] - mu_j),2)
-    E/=M
-    sigma_i/=M
-    sigma_j/=M
-    sigma_i = math.sqrt(sigma_i)
-    sigma_j = math.sqrt(sigma_j)
-    correlation = E/(sigma_i*sigma_j)
-    beta = 495
-    gamma = -2.47
-    #correlation += gamma
-    print correlation
-    return correlation
+   c= conn.cursor()
+   c.execute("SELECT A.movie_id ,A.user_id `A_user`, B.user_id `B_user`, A.time `A_time`, B.time `B_time`, A.review `A_review`, B.review `B_review` from (select * from reviews where user_id="+str(user_i)+") as A join (select * from reviews where user_id="+str(user_j)+") as B on A.movie_id=B.movie_id")
+   all_results = c.fetchall()
+   conn.commit()
+   #print all_results
+   avg_ratings = pickle.load(open("user_avg_rating","rb"))
+   mu_i = avg_ratings[int(user_i)]
+   mu_j = avg_ratings[int(user_j)]
+   M = len(all_results)
+   sigma_i =0
+   sigma_j = 0
+   E = 0
+   for row in all_results:
+       del_t = -abs(row[3]-row[4])
+       E += (row[5] - mu_i) * (row[6] - mu_j)*math.exp(del_t/4959393420)
+       sigma_i += math.pow((row[5] - mu_i),2)
+       sigma_j += math.pow((row[6] - mu_j),2)
+   E/=M
+   sigma_i/=M
+   sigma_j/=M
+   sigma_i = math.sqrt(sigma_i)
+   sigma_j = math.sqrt(sigma_j)
+   correlation = E/(sigma_i*sigma_j)
+   beta = 495
+   gamma = -2.47
+   #correlation += gamma
+   return correlation
 
     #print avg_i,avg_j
 
 
 
-def getNearestNeighbours(user_i="",movie="",k=0):
+def getNearestNeighbours(user_i="",movie="",k=100):
+    
     c= conn.cursor()
     c.execute("select user_id, review from REVIEWS where movie_id="+str(movie))
     all_results = c.fetchall()
-    conn.commit()
+    
+    print len(all_results)
     for i in range(len(all_results)):
         all_results[i]=list(all_results[i])
-    print all_results
     correlation=[]
+    print len(all_results)
     for i in range(len(all_results)):
-         correlation[i]=getCorrelation(user_i,all_results[i][0])
-    print correlation
+        correlation.append(getCorrelation(user_i,all_results[i][0]))
+        all_results[i].append(correlation[i])
+    all_results.sort(key=lambda x:-x[2])
+    return all_results[:k]
 
-def get_rating_by_knn(user="",movie="",k=0):
+def getRatingByKnn(user="",movie="",k=0):
 
-    get_results = getNearestNeighbours(user,movie,k)
+    all_results = getNearestNeighbours(user,movie,k)
     rating = 0
     num = 0
     den = 0
     avg_ratings = pickle.load(open("user_avg_rating","rb"))
-    for row in get_results:
-        num += row[1]*(row[2]-avg_ratings[int(row[0])])
-        den += abs(row[1])
+    for row in all_results:
+        num += row[2]*(row[1]-avg_ratings[int(row[0])])
+        den += abs(row[2])
     rating = num/den + avg_ratings[int(user)]
+    print rating
+    return rating
 
 
 
-
+rating=getRatingByKnn('1398626','1',100)
+c= conn.cursor()
+c.execute("select review from reviews where user_id=1398626 and movie_id=1")
+print c.fetchall()
+conn.close()
 #getCorrelation("387418","305344")
