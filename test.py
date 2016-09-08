@@ -50,9 +50,23 @@ def getCorrelation(user_i="",user_j=""):
     #correlation += gamma
     print correlation
     return correlation
-    
+
     #print avg_i,avg_j
-    
+
+
+
+def getNearestNeighbours(user_i="",movie="",k=0):
+    c= conn.cursor()
+    c.execute("select user_id, review from REVIEWS where movie_id="+str(movie))
+    all_results = c.fetchall()
+    conn.commit()
+    for i in range(len(all_results)):
+        all_results[i]=list(all_results[i])
+    print all_results
+    correlation=[]
+    for i in range(len(all_results)):
+         correlation[i]=getCorrelation(user_i,all_results[i][0])
+    print correlation
 
 def get_rating_by_knn(user="",movie="",k=0):
 
