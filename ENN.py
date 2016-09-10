@@ -27,5 +27,4 @@ def getClassStatistics(movie="",k=100):
         stats[i]/=n[i]
     return stats
 
-
 conn.close()
