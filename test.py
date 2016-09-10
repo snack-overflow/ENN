@@ -1,7 +1,7 @@
 import time
 start_time = time.time()
 import sqlite3
-conn = sqlite3.connect('top500.db')
+conn = sqlite3.connect('top5000.db')
 import pickle
 import math
 # c= conn.cursor()
@@ -98,9 +98,9 @@ def getRatingByKnn(user="",movie="",k=0):
 
 
 
-rating=getRatingByKnn('1398626','1',100)
+rating=getRatingByKnn('1181550','1',200)
 c= conn.cursor()
-c.execute("select review from reviews where user_id=1398626 and movie_id=1")
+c.execute("select review from reviews where user_id=1181550 and movie_id=1")
 print c.fetchall()
 conn.close()
 #getCorrelation("387418","305344")
