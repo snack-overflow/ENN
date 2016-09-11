@@ -1,9 +1,11 @@
 import time
-start_time = time.time()
+import sys
 import sqlite3
-conn = sqlite3.connect('top5000.db')
+conn = sqlite3.connect('top'+sys.argv[1]+'.db')
 import pickle
 import math
+import csv
+
 # c= conn.cursor()
 # c.execute("CREATE TABLE REVIEWS (movie_id integer, user_id integer, review integer, time real);")
 # # conn.commit()
@@ -38,7 +40,7 @@ def getCorrelation(user_i="",user_j=""):
    all_results = c.fetchall()
    conn.commit()
    #print all_results
-   avg_ratings = pickle.load(open("user_avg_rating","rb"))
+   avg_ratings = pickle.load(open("float_avg_user_rating","rb"))
    mu_i = avg_ratings[int(user_i)]
    mu_j = avg_ratings[int(user_j)]
    M = len(all_results)
@@ -71,15 +73,17 @@ def getNearestNeighbours(user_i="",movie="",k=100):
     c.execute("select user_id, review from REVIEWS where movie_id="+str(movie))
     all_results = c.fetchall()
     
-    print len(all_results)
+    
     for i in range(len(all_results)):
         all_results[i]=list(all_results[i])
     correlation=[]
-    print len(all_results)
+    
     for i in range(len(all_results)):
         correlation.append(getCorrelation(user_i,all_results[i][0]))
         all_results[i].append(correlation[i])
     all_results.sort(key=lambda x:-x[2])
+    if(k>len(all_results)):
+        k=len(all_results)
     return all_results[:k]
 
 def getRatingByKnn(user="",movie="",k=0):
@@ -93,14 +97,20 @@ def getRatingByKnn(user="",movie="",k=0):
         num += row[2]*(row[1]-avg_ratings[int(row[0])])
         den += abs(row[2])
     rating = num/den + avg_ratings[int(user)]
-    print rating
     return rating
 
 
 
-rating=getRatingByKnn('1181550','1',200)
-c= conn.cursor()
-c.execute("select review from reviews where user_id=1181550 and movie_id=1")
-print c.fetchall()
+rating=getRatingByKnn(sys.argv[2],sys.argv[3],int(sys.argv[4]))
+#user movie predicted actual db k
+#obj = [int(sys.argv[2]), int(sys.argv[3]),  float(str(rating)),float(str(sys.argv[5])), int(sys.argv[1]) ]
+
 conn.close()
 #getCorrelation("387418","305344")
+ 
+
+with open("test_data.csv", "a+b") as f:
+    writer = csv.writer(f)
+    writer.writerow([int(sys.argv[2]), int(sys.argv[3]),  float(str(rating)),float(str(sys.argv[5])), int(sys.argv[1]),int(sys.argv[4]) ])
+
+print [int(sys.argv[2]), int(sys.argv[3]),  float(str(rating)),float(str(sys.argv[5])), int(sys.argv[1]),int(sys.argv[4]) ]
