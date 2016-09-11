@@ -14,6 +14,7 @@ for i in range(len(results)):
     results[i]=list(results[i])
 
 
+
 for i in results:
     os.system("python test.py 500 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
 for i in results:
