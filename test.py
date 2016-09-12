@@ -1,7 +1,8 @@
 import time
 import sys
 import sqlite3
-conn = sqlite3.connect('top'+sys.argv[1]+'.db')
+#conn = sqlite3.connect('top'+sys.argv[1]+'.db')
+conn = sqlite3.connect("top500.db")
 import pickle
 import math
 import csv
@@ -36,7 +37,7 @@ def getRMSE(list1,list2):
 
 def getCorrelation(user_i="",user_j=""):
    c= conn.cursor()
-   c.execute("SELECT A.movie_id ,A.user_id `A_user`, B.user_id `B_user`, A.time `A_time`, B.time `B_time`, A.review `A_review`, B.review `B_review` from (select * from reviews where user_id="+str(user_i)+") as A join (select * from reviews where user_id="+str(user_j)+") as B on A.movie_id=B.movie_id")
+   c.execute("SELECT A.movie_id , A.user_id, B.user_id, A.time, B.time, A.review, B.review from (select * from reviews where user_id=387418) as A join (select * from reviews where user_id=387418) as B on A.movie_id=B.movie_id")
    all_results = c.fetchall()
    conn.commit()
    #print all_results
@@ -101,16 +102,20 @@ def getRatingByKnn(user="",movie="",k=0):
 
 
 
-rating=getRatingByKnn(sys.argv[2],sys.argv[3],int(sys.argv[4]))
-#user movie predicted actual db k
-#obj = [int(sys.argv[2]), int(sys.argv[3]),  float(str(rating)),float(str(sys.argv[5])), int(sys.argv[1]) ]
+# rating=getRatingByKnn(sys.argv[2],sys.argv[3],int(sys.argv[4]))
+# #user movie predicted actual db k
+# #obj = [int(sys.argv[2]), int(sys.argv[3]),  float(str(rating)),float(str(sys.argv[5])), int(sys.argv[1]) ]
 
-conn.close()
-#getCorrelation("387418","305344")
+# conn.close()
+# #getCorrelation("387418","305344")
  
 
-with open("test_data.csv", "a+b") as f:
-    writer = csv.writer(f)
-    writer.writerow([int(sys.argv[2]), int(sys.argv[3]),  float(str(rating)),float(str(sys.argv[5])), int(sys.argv[1]),int(sys.argv[4]) ])
+# with open("test_data.csv", "a+b") as f:
+#     writer = csv.writer(f)
+#     writer.writerow([int(sys.argv[2]), int(sys.argv[3]),  float(str(rating)),float(str(sys.argv[5])), int(sys.argv[1]),int(sys.argv[4]) ])
 
-print [int(sys.argv[2]), int(sys.argv[3]),  float(str(rating)),float(str(sys.argv[5])), int(sys.argv[1]),int(sys.argv[4]) ]
+# print [int(sys.argv[2]), int(sys.argv[3]),  float(str(rating)),float(str(sys.argv[5])), int(sys.argv[1]),int(sys.argv[4]) ]
+
+
+#saveAllCorrelation()
+conn.close()
