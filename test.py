@@ -27,11 +27,11 @@ def getRMSE(list1,list2):
     for i in range(len(list1)):
         error+=math.pow(list1[i]-list2[i],2)
     error=error/len(list1)
-    error=math.sqrt(error)        
+    error=math.sqrt(error)
     return error
 
 
-
+def saveAllCorrelation()
 
 
 def getCorrelation(user_i="",user_j=""):
@@ -68,16 +68,16 @@ def getCorrelation(user_i="",user_j=""):
 
 
 def getNearestNeighbours(user_i="",movie="",k=100):
-    
+
     c= conn.cursor()
     c.execute("select user_id, review from REVIEWS where movie_id="+str(movie))
     all_results = c.fetchall()
-    
-    
+
+
     for i in range(len(all_results)):
         all_results[i]=list(all_results[i])
     correlation=[]
-    
+
     for i in range(len(all_results)):
         correlation.append(getCorrelation(user_i,all_results[i][0]))
         all_results[i].append(correlation[i])
@@ -107,7 +107,7 @@ rating=getRatingByKnn(sys.argv[2],sys.argv[3],int(sys.argv[4]))
 
 conn.close()
 #getCorrelation("387418","305344")
- 
+
 
 with open("test_data.csv", "a+b") as f:
     writer = csv.writer(f)
