@@ -2,3 +2,4 @@ example.db
 top500.db
 top1000.db
 top5000.db
+*.pyc
