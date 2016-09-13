@@ -1,7 +1,9 @@
 import sqlite3
-conn = sqlite3.connect("top_500.db")
 import pickle
 import csv
+import pandas
+import math
+conn = sqlite3.connect("top500.db")
 
 
 def getCorrelation(user_i="",user_j=""):
@@ -31,24 +33,37 @@ def getCorrelation(user_i="",user_j=""):
    beta = 495
    gamma = -2.47
    #correlation += gamma
-   print correlation
    return correlation
+
+
+
 
 
 def saveAllCorrelation():
     with open("top_500_users","rb") as f:
         all_users = pickle.load(f)
-    file = open("allCorrelations.csv","wb")
+    file = open("allCorrelations.csv","a+b")
     writer = csv.writer(file)
-    for i in range(len(all_users)):
-        user = list(all_users[i])[0]
+    user=[]
+    for i in range(198,len(all_users)):
+        user.append(list(all_users[i])[0])
+    for i in range(198,len(all_users)):
         for j in range(i + 1,len(all_users)):
             print i,j
-            corr = getCorrelation(user,list(all_users[j])[0])
-            writer.writerow([user,list(all_users[j])[0],corr])
+            corr = getCorrelation(user[i],list(all_users[j])[0])
+            writer.writerow([user[i],list(all_users[j])[0],corr])
 
     file.close()
 
 
-def csvToDict():
-    
+# def csvToDict():
+#     my_dict = {}
+#     with open("test_data.csv","rb") as file:
+#         reader = pandas.read_csv(file)
+
+#     for i in range(len(reader)):
+#         my_dict[str(row[0][i]) +"-"+ str(row[1][i])] = row[2][i]
+#     pickle.dump(my_dict,open("allCorrelations","wb")
+saveAllCorrelation()
+conn.close()
+
