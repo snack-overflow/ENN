@@ -64,150 +64,149 @@ def getNearestNeighbours(user=''):
    return results
 
 def getAllNearestNeighbours(class_1=[], class_2=[], class_3=[], class_4=[], class_5=[],k=50):
-   class1_data = []
-   class2_data = []
-   class3_data = []
-   class4_data = []
-   class5_data = []
-   for i in range(len(class_1)):
-       user_dict = {}
-       user_dict['user'] = class_1[i]
-       del_indexes = []
-       allNeighbours = []
-       allNeighbours = getNearestNeighbours(class_1[i])
-       print allNeighbours, "nnnnnnnnnnnnnnnnnn"
-       for i in range(len(allNeighbours)):
-           if allNeighbours[i][0] in class_1:
-               allNeighbours[i].append(1)
-           elif allNeighbours[i][0] in class_2:
-               allNeighbours[i].append(2)
-           elif allNeighbours[i][0] in class_3:
-               allNeighbours[i].append(3)
-           elif allNeighbours[i][0] in class_4:
-               allNeighbours[i].append(4)
-           elif allNeighbours[i][0] in class_5:
-               allNeighbours[i].append(5)
-           else:
-               del_indexes.append(allNeighbours[i])
-       for i in del_indexes:
-           allNeighbours.remove(i)
-       if k< len(allNeighbours):
-           user_dict['allNeighbours'] = allNeighbours[:k]
-       else:
-           user_dict['allNeighbours'] = allNeighbours
-       class1_data.append(user_dict)
-
-   for i in range(len(class_2)):
-       user_dict = {}
-       user_dict['user'] = class_2[i]
-       del_indexes = []
-       allNeighbours = []
-       allNeighbours = getNearestNeighbours(class_2[i])
-       for i in range(len(allNeighbours)):
-           if allNeighbours[i][0] in class_1:
-               allNeighbours[i].append(1)
-           elif allNeighbours[i][0] in class_2:
-               allNeighbours[i].append(2)
-           elif allNeighbours[i][0] in class_3:
-               allNeighbours[i].append(3)
-           elif allNeighbours[i][0] in class_4:
-               allNeighbours[i].append(4)
-           elif allNeighbours[i][0] in class_5:
-               allNeighbours[i].append(5)
-           else:
-               del_indexes.append(allNeighbours[i])
-       for i in del_indexes:
-           allNeighbours.remove(i)
-       if k< len(allNeighbours):
-           user_dict['allNeighbours'] = allNeighbours[:k]
-       else:
-           user_dict['allNeighbours'] = allNeighbours
-       class2_data.append(user_dict)
-
-   for i in range(len(class_3)):
-       user_dict = {}
-       user_dict['user'] = class_3[i]
-       del_indexes = []
-       allNeighbours = []
-       allNeighbours = getNearestNeighbours(class_3[i])
-       for i in range(len(allNeighbours)):
-           if allNeighbours[i][0] in class_1:
-               allNeighbours[i].append(1)
-           elif allNeighbours[i][0] in class_2:
-               allNeighbours[i].append(2)
-           elif allNeighbours[i][0] in class_3:
-               allNeighbours[i].append(3)
-           elif allNeighbours[i][0] in class_4:
-               allNeighbours[i].append(4)
-           elif allNeighbours[i][0] in class_5:
-               allNeighbours[i].append(5)
-           else:
-               del_indexes.append(allNeighbours[i])
-       for i in del_indexes:
-           allNeighbours.remove(i)
-       if k< len(allNeighbours):
-           user_dict['allNeighbours'] = allNeighbours[:k]
-       else:
-           user_dict['allNeighbours'] = allNeighbours
-       class3_data.append(user_dict)
-
+    class1_data = []
+    class2_data = []
+    class3_data = []
+    class4_data = []
+    class5_data = []
+    for i in range(len(class_1)):
+        user_dict = {}
+        user_dict['user'] = class_1[i]
+        del_indexes = []
+        allNeighbours = []
+        allNeighbours = getNearestNeighbours(class_1[i])
+        for i in range(len(allNeighbours)):
+            if allNeighbours[i][0] in class_1:
+                allNeighbours[i].append(1)
+            elif allNeighbours[i][0] in class_2:
+                allNeighbours[i].append(2)
+            elif allNeighbours[i][0] in class_3:
+                allNeighbours[i].append(3)
+            elif allNeighbours[i][0] in class_4:
+                allNeighbours[i].append(4)
+            elif allNeighbours[i][0] in class_5:
+                allNeighbours[i].append(5)
+            else:
+                del_indexes.append(allNeighbours[i])
+        for i in del_indexes:
+            allNeighbours.remove(i)
+        if k< len(allNeighbours):
+            user_dict['allNeighbours'] = allNeighbours[:k]
+        else:
+            user_dict['allNeighbours'] = allNeighbours
+        class1_data.append(user_dict)
+ 
+    for i in range(len(class_2)):
+        user_dict = {}
+        user_dict['user'] = class_2[i]
+        del_indexes = []
+        allNeighbours = []
+        allNeighbours = getNearestNeighbours(class_2[i])
+        for i in range(len(allNeighbours)):
+            if allNeighbours[i][0] in class_1:
+                allNeighbours[i].append(1)
+            elif allNeighbours[i][0] in class_2:
+                allNeighbours[i].append(2)
+            elif allNeighbours[i][0] in class_3:
+                allNeighbours[i].append(3)
+            elif allNeighbours[i][0] in class_4:
+                allNeighbours[i].append(4)
+            elif allNeighbours[i][0] in class_5:
+                allNeighbours[i].append(5)
+            else:
+                del_indexes.append(allNeighbours[i])
+        for i in del_indexes:
+            allNeighbours.remove(i)
+        if k< len(allNeighbours):
+            user_dict['allNeighbours'] = allNeighbours[:k]
+        else:
+            user_dict['allNeighbours'] = allNeighbours
+        class2_data.append(user_dict)
+ 
+    for i in range(len(class_3)):
+        user_dict = {}
+        user_dict['user'] = class_3[i]
+        del_indexes = []
+        allNeighbours = []
+        allNeighbours = getNearestNeighbours(class_3[i])
+        for i in range(len(allNeighbours)):
+            if allNeighbours[i][0] in class_1:
+                allNeighbours[i].append(1)
+            elif allNeighbours[i][0] in class_2:
+                allNeighbours[i].append(2)
+            elif allNeighbours[i][0] in class_3:
+                allNeighbours[i].append(3)
+            elif allNeighbours[i][0] in class_4:
+                allNeighbours[i].append(4)
+            elif allNeighbours[i][0] in class_5:
+                allNeighbours[i].append(5)
+            else:
+                del_indexes.append(allNeighbours[i])
+        for i in del_indexes:
+            allNeighbours.remove(i)
+        if k< len(allNeighbours):
+            user_dict['allNeighbours'] = allNeighbours[:k]
+        else:
+            user_dict['allNeighbours'] = allNeighbours
+        class3_data.append(user_dict)
+ 
     for i in range(len(class_4)):
-       user_dict = {}
-       user_dict['user'] = class_4[i]
-       del_indexes = []
-       allNeighbours = []
-       allNeighbours = getNearestNeighbours(class_4[i])
-       for i in range(len(allNeighbours)):
-           if allNeighbours[i][0] in class_1:
-               allNeighbours[i].append(1)
-           elif allNeighbours[i][0] in class_2:
-               allNeighbours[i].append(2)
-           elif allNeighbours[i][0] in class_3:
-               allNeighbours[i].append(3)
-           elif allNeighbours[i][0] in class_4:
-               allNeighbours[i].append(4)
-           elif allNeighbours[i][0] in class_5:
-               allNeighbours[i].append(5)
-           else:
-               del_indexes.append(allNeighbours[i])
-       for i in del_indexes:
-           allNeighbours.remove(i)
-       if k< len(allNeighbours):
-           user_dict['allNeighbours'] = allNeighbours[:k]
-       else:
-           user_dict['allNeighbours'] = allNeighbours
-       class4_data.append(user_dict)
-
+        user_dict = {}
+        user_dict['user'] = class_4[i]
+        del_indexes = []
+        allNeighbours = []
+        allNeighbours = getNearestNeighbours(class_4[i])
+        for i in range(len(allNeighbours)):
+            if allNeighbours[i][0] in class_1:
+                allNeighbours[i].append(1)
+            elif allNeighbours[i][0] in class_2:
+                allNeighbours[i].append(2)
+            elif allNeighbours[i][0] in class_3:
+                allNeighbours[i].append(3)
+            elif allNeighbours[i][0] in class_4:
+                allNeighbours[i].append(4)
+            elif allNeighbours[i][0] in class_5:
+                allNeighbours[i].append(5)
+            else:
+                del_indexes.append(allNeighbours[i])
+        for i in del_indexes:
+            allNeighbours.remove(i)
+        if k< len(allNeighbours):
+            user_dict['allNeighbours'] = allNeighbours[:k]
+        else:
+            user_dict['allNeighbours'] = allNeighbours
+        class4_data.append(user_dict)
+ 
     for i in range(len(class_5)):
-       user_dict = {}
-       user_dict['user'] = class_5[i]
-       del_indexes = []
-       allNeighbours = []
-       allNeighbours = getNearestNeighbours(class_5[i])
-       for i in range(len(allNeighbours)):
-           if allNeighbours[i][0] in class_1:
-               allNeighbours[i].append(1)
-           elif allNeighbours[i][0] in class_2:
-               allNeighbours[i].append(2)
-           elif allNeighbours[i][0] in class_3:
-               allNeighbours[i].append(3)
-           elif allNeighbours[i][0] in class_4:
-               allNeighbours[i].append(4)
-           elif allNeighbours[i][0] in class_5:
-               allNeighbours[i].append(5)
-           else:
-               del_indexes.append(allNeighbours[i])
-       for i in del_indexes:
-           allNeighbours.remove(i)
-       if k< len(allNeighbours):
-           user_dict['allNeighbours'] = allNeighbours[:k]
-       else:
-           user_dict['allNeighbours'] = allNeighbours
-       class5_data.append(user_dict)
-
-   return class1_data,class2_data,class3_data,class4_data,class5_data
-
-
+        user_dict = {}
+        user_dict['user'] = class_5[i]
+        del_indexes = []
+        allNeighbours = []
+        allNeighbours = getNearestNeighbours(class_5[i])
+        for i in range(len(allNeighbours)):
+            if allNeighbours[i][0] in class_1:
+                allNeighbours[i].append(1)
+            elif allNeighbours[i][0] in class_2:
+                allNeighbours[i].append(2)
+            elif allNeighbours[i][0] in class_3:
+                allNeighbours[i].append(3)
+            elif allNeighbours[i][0] in class_4:
+                allNeighbours[i].append(4)
+            elif allNeighbours[i][0] in class_5:
+                allNeighbours[i].append(5)
+            else:
+                del_indexes.append(allNeighbours[i])
+        for i in del_indexes:
+            allNeighbours.remove(i)
+        if k< len(allNeighbours):
+            user_dict['allNeighbours'] = allNeighbours[:k]
+        else:
+            user_dict['allNeighbours'] = allNeighbours
+        class5_data.append(user_dict)
+ 
+    return class1_data,class2_data,class3_data,class4_data,class5_data
+ 
+ 
 def getDelN(user,class_user,class1_data=[],class2_data=[],class3_data=[],class4_data=[],class5_data=[]):
     delN=[0,0,0,0,0]
     for i in range(len(class1_data)):
@@ -276,11 +275,11 @@ def getDelN(user,class_user,class1_data=[],class2_data=[],class3_data=[],class4_
                     delN[4]+=1
                 else:
                     pass
+    print delN
 
 
 
-
-def getNNOne(user='',class_1,class_2,class_3, class_4, class_5):
+def getNNOne(user,class_1,class_2,class_3, class_4, class_5):
     all_corr=[]
     results=[]
     class_count=[0,0,0,0,0]
@@ -303,13 +302,14 @@ def getNNOne(user='',class_1,class_2,class_3, class_4, class_5):
             class_count[3]+=1
         elif results[i] in class_5:
             class_count[4]+=1
+    print class_count
     return class_count
 
 
 
 
 
-def getClassStatistics(class1_data = [],class2_data =[],class3_data=[],class4_data=[],class5_data=[], user="",movie="",k=100):
+def getClassStatistics(class1_data = [],class2_data =[],class3_data=[],class4_data=[],class5_data=[],k=100):
     stats = [0 for x in range(5)]
     n = [0 for x in range(5)]
 
@@ -346,24 +346,35 @@ def getClassStatistics(class1_data = [],class2_data =[],class3_data=[],class4_da
     n[4] = len(class5_data)
     for i in range(len(stats)):
         stats[i]/=k
-        stats[i]/=n[i]
+        if(n[i]==0):
+            stats[i]=0
+        else:
+            stats[i]/=n[i]
     return stats
 
 
-def ENN_main(user="", movie="", k= 50):
-   class_1,class_2,class_3, class_4, class_5 =  getUserReviewClasses(movie,user)
-   print "ALL CLASSES"
-   print class_1,class_2,class_3, class_4, class_5
-   class1_data,class2_data,class3_data,class4_data,class5_data = getAllNearestNeighbours(class_1,class_2,class_3, class_4, class_5,k)
-   print class1_data
-   print "1111111111111111111111111111111111111111111"
-   print class2_data
-   print "2222222222222222222222222222222222222222222"
-   print class3_data
-   print "3333333333333333333333333333333333333333333"
-   print class4_data
-   print "4444444444444444444444444444444444444444444"
-   print class5_data
-   print "5555555555555555555555555555555555555555555"
+def ENN_main(user="", movie="", k= 100):
+    class_1,class_2,class_3, class_4, class_5 =  getUserReviewClasses(movie,user)
+
+    class1_data,class2_data,class3_data,class4_data,class5_data = getAllNearestNeighbours(class_1,class_2,class_3, class_4, class_5,k)
+    ni=[len(class1_data),len(class2_data),len(class3_data),len(class4_data),len(class5_data)]
+    rating_power = [0,0,0,0,0]
+    stats=getClassStatistics(class1_data,class2_data,class3_data,class4_data,class5_data,k)
+    for j in range(5):
+        if stats[j] == 0:
+            rating_power[j] = -999
+            continue
+        temp =0
+        delN=getDelN(user,j,class1_data,class2_data,class3_data,class4_data,class5_data)
+        ki=getNNOne(user,class_1,class_2,class_3,class_4,class_5)
+        for i in range(5):
+            if(i==j):
+                temp+=delN[i]+ki[i]-k*stats[i]
+                temp/=((ni[i]+1)*k)
+        else:
+            temp+=(delN[i]/(ni[i]*k))
+        rating_power[j]=temp
+    print rating_power
+    print "Final rating is ", (rating_power.index(max(rating_power))+1)
 
 ENN_main("31254","4",50)
