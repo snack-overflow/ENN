@@ -29,7 +29,10 @@ def getCorrelation(user_i="",user_j=""):
    sigma_j/=M
    sigma_i = math.sqrt(sigma_i)
    sigma_j = math.sqrt(sigma_j)
-   correlation = E/(sigma_i*sigma_j)
+   if(sigma_i==0 or sigma_j== 0):
+        correlation=0
+   else:
+        correlation = E/(sigma_i*sigma_j)
    beta = 495
    gamma = -2.47
    #correlation += gamma
@@ -45,10 +48,11 @@ def saveAllCorrelation():
     file = open("allCorrelations.csv","a+b")
     writer = csv.writer(file)
     user=[]
-    for i in range(198,len(all_users)):
+    for i in range(len(all_users)):
         user.append(list(all_users[i])[0])
     for i in range(198,len(all_users)):
         for j in range(i + 1,len(all_users)):
+            print user[i],list(all_users[j])[0]
             print i,j
             corr = getCorrelation(user[i],list(all_users[j])[0])
             writer.writerow([user[i],list(all_users[j])[0],corr])
