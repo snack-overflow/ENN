@@ -6,7 +6,6 @@ import math
 import csv
 import pandas
 from exec_db import *
-Faizaan Charania (faizaancharania@gmail.com)
 
 def getUserReviewClasses(movie_id='', user=''):
    class_1=[]
@@ -39,27 +38,7 @@ def getUserReviewClasses(movie_id='', user=''):
 
    return class_1,class_2,class_3,class_4,class_5
 
-def getClassStatistics(user="",movie="",k=100):
-    stats = [0 for x in range(5)]
-    n = [0 for x in range(5)]
-    c = conn.cursor()
-    q_str = "select user_id,review from reviews where movie_id ="+movie + "and user_id <>"+ user+" order by review"
 
-    c.execute(q_str)
-    result = c.fetchall()
-    other_users = result
-    for user in result:
-        n[int(user[1])-1] +=1
-        neighbours = getNearestNeighbours(user,movie,k)
-        for other in neighbours:
-            if user[1] == other[1]:
-                stats[int(user[1])-1]+=1
-            else:
-                pass
-    for i in range(len(stats)):
-        stats[i]/=k
-        stats[i]/=n[i]
-    return stats
 
 def getCorrelation(user1='', user2=''):
    with open('allCorrelations.csv','rb') as f:
@@ -171,7 +150,7 @@ def getAllNearestNeighbours(class_1=[], class_2=[], class_3=[], class_4=[], clas
        else:
            user_dict['allNeighbours'] = allNeighbours
        class3_data.append(user_dict)
-    
+
     for i in range(len(class_4)):
        user_dict = {}
        user_dict['user'] = class_4[i]
@@ -233,7 +212,7 @@ def getDelN(user,class_user,class1_data=[],class2_data=[],class3_data=[],class4_
     delN=[0,0,0,0,0]
     for i in range(len(class1_data)):
         neighbour=class1_data[i]['allNeighbours'][-1]
-        corr=getCorrelation(str(user),str(class1_data[i]['user']))   
+        corr=getCorrelation(str(user),str(class1_data[i]['user']))
         if(corr>neighbour[1]):
             if(class_user==neighbour[2]):
                 pass
@@ -246,7 +225,7 @@ def getDelN(user,class_user,class1_data=[],class2_data=[],class3_data=[],class4_
                     pass
     for i in range(len(class2_data)):
         neighbour=class2_data[i]['allNeighbours'][-1]
-        corr=getCorrelation(str(user),str(class2_data[i]['user']))   
+        corr=getCorrelation(str(user),str(class2_data[i]['user']))
         if(corr>neighbour[1]):
             if(class_user==neighbour[2]):
                 pass
@@ -259,7 +238,7 @@ def getDelN(user,class_user,class1_data=[],class2_data=[],class3_data=[],class4_
                     pass
     for i in range(len(class3_data)):
         neighbour=class3_data[i]['allNeighbours'][-1]
-        corr=getCorrelation(str(user),str(class3_data[i]['user']))   
+        corr=getCorrelation(str(user),str(class3_data[i]['user']))
         if(corr>neighbour[1]):
             if(class_user==neighbour[2]):
                 pass
@@ -272,7 +251,7 @@ def getDelN(user,class_user,class1_data=[],class2_data=[],class3_data=[],class4_
                     pass
     for i in range(len(class4_data)):
         neighbour=class4_data[i]['allNeighbours'][-1]
-        corr=getCorrelation(str(user),str(class4_data[i]['user']))   
+        corr=getCorrelation(str(user),str(class4_data[i]['user']))
         if(corr>neighbour[1]):
             if(class_user==neighbour[2]):
                 pass
@@ -286,7 +265,7 @@ def getDelN(user,class_user,class1_data=[],class2_data=[],class3_data=[],class4_
 
     for i in range(len(class5_data)):
         neighbour=class5_data[i]['allNeighbours'][-1]
-        corr=getCorrelation(str(user),str(class5_data[i]['user']))   
+        corr=getCorrelation(str(user),str(class5_data[i]['user']))
         if(corr>neighbour[1]):
             if(class_user==neighbour[2]):
                 pass
@@ -327,6 +306,50 @@ def getNNOne(user='',class_1,class_2,class_3, class_4, class_5):
     return class_count
 
 
+
+
+
+def getClassStatistics(class1_data = [],class2_data =[],class3_data=[],class4_data=[],class5_data=[], user="",movie="",k=100):
+    stats = [0 for x in range(5)]
+    n = [0 for x in range(5)]
+
+    for i in range(len(class1_data)):
+        allNeighbours = class1_data[i]['allNeighbours']
+        for neighbour in allNeighbours:
+            if neighbour[2] == 1:
+                stats[0]+=1
+    for i in range(len(class2_data)):
+        allNeighbours = class2_data[i]['allNeighbours']
+        for neighbour in allNeighbours:
+            if neighbour[2] == 2:
+                stats[1]+=1
+    for i in range(len(class3_data)):
+        allNeighbours = class3_data[i]['allNeighbours']
+        for neighbour in allNeighbours:
+            if neighbour[2] == 3:
+                stats[2]+=1
+    for i in range(len(class4_data)):
+        allNeighbours = class4_data[i]['allNeighbours']
+        for neighbour in allNeighbours:
+            if neighbour[2] == 4:
+                stats[3]+=1
+    for i in range(len(class5_data)):
+        allNeighbours = class5_data[i]['allNeighbours']
+        for neighbour in allNeighbours:
+            if neighbour[2] == 5:
+                stats[4]+=1
+
+    n[0] = len(class1_data)
+    n[1] = len(class2_data)
+    n[2] = len(class3_data)
+    n[3] = len(class4_data)
+    n[4] = len(class5_data)
+    for i in range(len(stats)):
+        stats[i]/=k
+        stats[i]/=n[i]
+    return stats
+
+
 def ENN_main(user="", movie="", k= 50):
    class_1,class_2,class_3, class_4, class_5 =  getUserReviewClasses(movie,user)
    print "ALL CLASSES"
@@ -344,4 +367,3 @@ def ENN_main(user="", movie="", k= 50):
    print "5555555555555555555555555555555555555555555"
 
 ENN_main("31254","4",50)
-
