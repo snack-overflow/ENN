@@ -297,6 +297,36 @@ def getDelN(user,class_user,class1_data=[],class2_data=[],class3_data=[],class4_
                     delN[4]+=1
                 else:
                     pass
+
+
+
+
+def getNNOne(user='',class_1,class_2,class_3, class_4, class_5):
+    all_corr=[]
+    results=[]
+    class_count=[0,0,0,0,0]
+    with open('allCorrelations.csv','rb') as f:
+        all_corr=pandas.read_csv(f,header=None)
+        for i in range(len(all_corr)):
+            if all_corr.ix[i][0]==int(user):
+                results.append([ all_corr.ix[i][1], all_corr.ix[i][2]])
+            elif all_corr.ix[i][1]==int(user):
+                 results.append([all_corr.ix[i][0], all_corr.ix[i][2]])
+    results.sort(key=lambda x: -x[1])
+    for i in range(len(results)):
+        if results[i] in class_1:
+            class_count[0]+=1
+        elif results[i] in class_2:
+            class_count[1]+=1
+        elif results[i] in class_3:
+            class_count[2]+=1
+        elif results[i] in class_4:
+            class_count[3]+=1
+        elif results[i] in class_5:
+            class_count[4]+=1
+    return class_count
+
+
 def ENN_main(user="", movie="", k= 50):
    class_1,class_2,class_3, class_4, class_5 =  getUserReviewClasses(movie,user)
    print "ALL CLASSES"
@@ -314,3 +344,4 @@ def ENN_main(user="", movie="", k= 50):
    print "5555555555555555555555555555555555555555555"
 
 ENN_main("31254","4",50)
+
