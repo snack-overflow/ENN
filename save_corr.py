@@ -50,12 +50,14 @@ def saveAllCorrelation():
     user=[]
     for i in range(len(all_users)):
         user.append(list(all_users[i])[0])
+
     for i in range(198,len(all_users)):
         for j in range(i + 1,len(all_users)):
             print user[i],list(all_users[j])[0]
             print i,j
             corr = getCorrelation(user[i],list(all_users[j])[0])
             writer.writerow([user[i],list(all_users[j])[0],corr])
+
 
     file.close()
 
@@ -68,6 +70,19 @@ def saveAllCorrelation():
 #     for i in range(len(reader)):
 #         my_dict[str(row[0][i]) +"-"+ str(row[1][i])] = row[2][i]
 #     pickle.dump(my_dict,open("allCorrelations","wb")
-saveAllCorrelation()
+#saveAllCorrelation()
+with open("top_500_users","rb") as f:
+    all_users = pickle.load(f)
+user=[]
+for i in range(len(all_users)):
+    user.append(list(all_users[i])[0])
+print "here"
+c = getCorrelation(user[458],user[457])
+print c
+c = getCorrelation(user[478],user[477])
+print c
+c = getCorrelation(user[488],user[487])
+print c
+c = getCorrelation(user[498],user[497])
+print c
 conn.close()
-
