@@ -8,36 +8,36 @@ import pandas
 from exec_db import *
 # import pdb
 # pdb.set_trace()
-def getUserReviewClasses(movie_id='', data="500",user=''):
+def getUserReviewClasses(movie_id='', user=''):
    class_1=[]
-   class_1=execQuery(query="select distinct user_id from reviews where review=1 and user_id<>"+user+ " and movie_id="+str(movie_id),dB= 'top'+data+'.db')
+   class_1=execQuery(query="select distinct user_id from reviews where review=1 and movie_id="+str(movie_id)+ " and user_id<>" + str(user),dB= "top500.db")
    for i in range(len(class_1)):
        #print i, " in for 1 of getUserReviewClasses"
        class_1[i]=list(class_1[i])[0]
 
 
    class_2=[]
-   class_2=execQuery(query="select user_id from reviews where review=2 and user_id<>"+user+ " and movie_id="+str(movie_id),dB= 'top'+data+'.db')
+   class_2=execQuery(query="select user_id from reviews where review=2 and movie_id="+str(movie_id)+ " and user_id<>" + str(user),dB= "top500.db")
    for i in range(len(class_2)):
        #print i, " in for 2 of getUserReviewClasses"
        class_2[i]=list(class_2[i])[0]
 
 
    class_3=[]
-   class_3=execQuery(query="select user_id from reviews where review=3 and user_id<>"+user+ " and movie_id="+str(movie_id),dB= 'top'+data+'.db')
+   class_3=execQuery(query="select user_id from reviews where review=3 and movie_id="+str(movie_id)+ " and user_id<>" + str(user),dB= "top500.db")
    for i in range(len(class_3)):
        #print i, " in for 3 of getUserReviewClasses"
        class_3[i]=list(class_3[i])[0]
 
 
    class_4=[]
-   class_4=execQuery(query="select user_id from reviews where review=4 and user_id<>"+user+ " and movie_id="+str(movie_id),dB= 'top'+data+'.db')
+   class_4=execQuery(query="select user_id from reviews where review=4 and movie_id="+str(movie_id)+ " and user_id<>" + str(user),dB= "top500.db")
    for i in range(len(class_4)):
        #print i, " in for 4 of getUserReviewClasses"
        class_4[i]=list(class_4[i])[0]
 
    class_5=[]
-   class_5=execQuery(query="select user_id from reviews where review=5 and user_id<>"+user+ " and movie_id="+str(movie_id),dB= 'top'+data+'.db')
+   class_5=execQuery(query="select user_id from reviews where review=5 and movie_id="+str(movie_id)+ " and user_id<>" + str(user),dB= "top500.db")
    for i in range(len(class_5)):
        #print i, " in for 5 of getUserReviewClasses"
        class_5[i]=list(class_5[i])[0]
@@ -388,150 +388,89 @@ def getClassStatistics(class1_data = [],class2_data =[],class3_data=[],class4_da
     return stats
 
 
-def ENN_main(db=500, k= 100):
-    with open("test_movies","rb") as f:
-        test_movies = pickle.load(f)
+def ENN_main(user="", movie="", k= 100):
+    # class_1,class_2,class_3, class_4, class_5 =  getUserReviewClasses(movie,user)
+    # with open("class_1","wb") as file:
+    #     pickle.dump(class_1,file)
+    # with open("class_2","wb") as file:
+    #     pickle.dump(class_2,file)
+    # with open("class_3","wb") as file:
+    #     pickle.dump(class_3,file)
+    # with open("class_4","wb") as file:
+    #     pickle.dump(class_4,file)
+    # with open("class_5","wb") as file:
+    #     pickle.dump(class_5,file)
 
-    for i in range(len(test_movies)):
-        movie = test_movies[i][0]
-        all_users = test_movies[i][1]
-        # class_1,class_2,class_3, class_4, class_5 =  getUserReviewClasses(movie,str(db))
-        # print "getUserReviewClasses done"
-        # with open("class_1","wb") as file:
-        #     pickle.dump(class_1,file)
-        # with open("class_2","wb") as file:
-        #     pickle.dump(class_2,file)
-        # with open("class_3","wb") as file:
-        #     pickle.dump(class_3,file)
-        # with open("class_4","wb") as file:
-        #     pickle.dump(class_4,file)
-        # with open("class_5","wb") as file:
-        #     pickle.dump(class_5,file)
-
-        # class1_data,class2_data,class3_data,class4_data,class5_data = getAllNearestNeighbours(class_1,class_2,class_3, class_4, class_5,k)
-        # print "getAllNearestNeighbours done"
-        # with open("class1_data","rb") as file:
-        #     class1_data = pickle.load(file)
-        # with open("class2_data","rb") as file:
-        #     class2_data = pickle.load(file)
-        # with open("class3_data","rb") as file:
-        #     class3_data = pickle.load(file)
-        # with open("class4_data","rb") as file:
-        #     class4_data = pickle.load(file)
-        # with open("class5_data","rb") as file:
-        #     class5_data = pickle.load(file)
-        # with open("class_1","rb") as file:
-        #     class_1 = pickle.load(file)
-        # with open("class_2","rb") as file:
-        #     class_2 = pickle.load(file)
-        # with open("class_3","rb") as file:
-        #     class_3 = pickle.load(file)
-        # with open("class_4","rb") as file:
-        #     class_4 = pickle.load(file)
-        # with open("class_5","rb") as file:
-        #     class_5 = pickle.load(file)
+    # class1_data,class2_data,class3_data,class4_data,class5_data = getAllNearestNeighbours(class_1,class_2,class_3, class_4, class_5,k)
+    with open("class1_data","rb") as file:
+        class1_data = pickle.load(file)
+    with open("class2_data","rb") as file:
+        class2_data = pickle.load(file)
+    with open("class3_data","rb") as file:
+        class3_data = pickle.load(file)
+    with open("class4_data","rb") as file:
+        class4_data = pickle.load(file)
+    with open("class5_data","rb") as file:
+        class5_data = pickle.load(file)
+    with open("class_1","rb") as file:
+        class_1 = pickle.load(file)
+    with open("class_2","rb") as file:
+        class_2 = pickle.load(file)
+    with open("class_3","rb") as file:
+        class_3 = pickle.load(file)
+    with open("class_4","rb") as file:
+        class_4 = pickle.load(file)
+    with open("class_5","rb") as file:
+        class_5 = pickle.load(file)
 
 
-        # generating copies of all variables to restore them for every user
-        for data in all_users:
-            user = data[0]
-            class_1,class_2,class_3, class_4, class_5 =  getUserReviewClasses(movie,str(db), user)
-            print "getUserReviewClasses done"
+    for usr in class1_data:
+        if usr['user'] == user:
+            class1_data.remove(usr)
+            user_deleted = True
+            break
+    if user_deleted is False:
+        for usr in class2_data:
+            if usr['user'] == user:
+                class2_data.remove(usr)
+                user_deleted = True
+                break
+    if user_deleted is False:
+        for usr in class3_data:
+            if usr['user'] == user:
+                class3_data.remove(usr)
+                user_deleted = True
+                break
+    if user_deleted is False:
+        for usr in class4_data:
+            if usr['user'] == user:
+                class4_data.remove(usr)
+                user_deleted = True
+                break
+    if user_deleted is False:
+        for usr in class5_data:
+            if usr['user'] == user:
+                class5_data.remove(usr)
+                user_deleted = True
+                break
+    ni=[len(class1_data),len(class2_data),len(class3_data),len(class4_data),len(class5_data)]
+    rating_power = [0,0,0,0,0]
+    stats=getClassStatistics(class1_data,class2_data,class3_data,class4_data,class5_data,k)
+    ki=getNNOne(user,class_1,class_2,class_3,class_4,class_5)
+    for j in range(5):
+        if stats[j] == 0:
+            rating_power[j] = -999
+            continue
+        temp =0
+        delN=getDelN(user,j+1,class1_data,class2_data,class3_data,class4_data,class5_data)
+        for i in range(5):
+            if(i==j):
+                temp+=delN[i]+ki[i]-k*stats[i]
+                temp/=((ni[i]+1)*k)
+        else:
+            temp+=(delN[i]/(ni[i]*k))
+        rating_power[j]=temp
+    print rating_power
+    print "Final rating is ", (rating_power.index(max(rating_power))+1)
 
-            class1_data,class2_data,class3_data,class4_data,class5_data = getAllNearestNeighbours(class_1,class_2,class_3, class_4, class_5,k)
-            print "getAllNearestNeighbours done"
-
-            user_deleted = False
-            for usr in class1_data:
-                if usr['user'] == user:
-                    class1_data.remove(usr)
-                    user_deleted = True
-                    break
-            if user_deleted is False:
-                for usr in class2_data:
-                    if usr['user'] == user:
-                        class2_data.remove(usr)
-                        user_deleted = True
-                        break
-            if user_deleted is False:
-                for usr in class3_data:
-                    if usr['user'] == user:
-                        class3_data.remove(usr)
-                        user_deleted = True
-                        break
-            if user_deleted is False:
-                for usr in class4_data:
-                    if usr['user'] == user:
-                        class4_data.remove(usr)
-                        user_deleted = True
-                        break
-            if user_deleted is False:
-                for usr in class5_data:
-                    if usr['user'] == user:
-                        class5_data.remove(usr)
-                        user_deleted = True
-                        break
-            ni=[len(class1_data),len(class2_data),len(class3_data),len(class4_data),len(class5_data)]
-            rating_power = [0,0,0,0,0]
-            stats=getClassStatistics(class1_data,class2_data,class3_data,class4_data,class5_data,k)
-            ki=getNNOne(user,class_1,class_2,class_3,class_4,class_5)
-            for j in range(5):
-                if stats[j] == 0:
-                    rating_power[j] = -999
-                    continue
-                temp =0
-                delN=getDelN(user,j+1,class1_data,class2_data,class3_data,class4_data,class5_data)
-                for i in range(5):
-                    if(i==j):
-                        temp+=delN[i]+ki[i]-k*stats[i]
-                        temp/=((ni[i]+1)*k)
-                else:
-                    temp+=(delN[i]/(ni[i]*k))
-                rating_power[j]=temp
-            print rating_power
-            rating = (rating_power.index(max(rating_power))+1)
-            with open("ENN_test_data.csv", "a+b") as f:
-                writer = csv.writer(f)
-                writer.writerow([user, movie,float(str(rating)),float(data[1]), int(db),int(k)])
-            print user, movie,float(str(rating)),float(data[1]), int(db),int(k)
-            # print "Final rating is ", rating
-import datetime
-with open("exec_time.txt","wt") as f:
-    st = datetime.datetime.now()
-    f.write("Starting time: " + str(st))
-    ENN_main(500,50)
-    e1 = datetime.datetime.now()
-    f.write("After 500,50.... time: " + str(e1) + "elapsed: " + str(e1-st))
-    ENN_main(500,100)
-    e2 = datetime.datetime.now()
-    f.write("After 500,100.... time: " + str(e2) + "elapsed: " + str(e2-e1))
-    ENN_main(500,250)
-    e3 = datetime.datetime.now()
-    f.write("After 500,250.... time: " + str(e3) + "elapsed: " + str(e3-e2))
-    ENN_main(500,500)
-    e4 = datetime.datetime.now()
-    f.write("After 500,500.... time: " + str(e4) + "elapsed: " + str(e4-e3))
-    ENN_main(1000,50)
-    e5 = datetime.datetime.now()
-    f.write("After 1000,50.... time: " + str(e5) + "elapsed: " + str(e5-e4))
-    ENN_main(1000,100)
-    e6 = datetime.datetime.now()
-    f.write("After 1000,100.... time: " + str(e6) + "elapsed: " + str(e6-e5))
-    ENN_main(1000,250)
-    e7 = datetime.datetime.now()
-    f.write("After 1000,100.... time: " + str(e7) + "elapsed: " + str(e7-e6))
-    ENN_main(1000,500)
-    e8 = datetime.datetime.now()
-    f.write("After 1000,100.... time: " + str(e8) + "elapsed: " + str(e8-e7))
-    ENN_main(5000,50)
-    e9 = datetime.datetime.now()
-    f.write("After 5000,50.... time: " + str(e9) + "elapsed: " + str(e9-e8))
-    ENN_main(5000,100)
-    e10 = datetime.datetime.now()
-    f.write("After 5000,100.... time: " + str(e10) + "elapsed: " + str(e10-e9))
-    ENN_main(5000,250)
-    e11 = datetime.datetime.now()
-    f.write("After 5000,250.... time: " + str(e11) + "elapsed: " + str(e11-e10))
-    ENN_main(5000,500)
-    e12 = datetime.datetime.now()
-    f.write("After 5000,500.... time: " + str(e12) + "elapsed: " + str(e12-e11))
+ENN_main("2464081","1",50)

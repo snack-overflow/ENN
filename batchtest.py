@@ -3,20 +3,78 @@ import sqlite3
 import os
 import pickle
 import math
+# conn = sqlite3.connect('top500.db')
+# c=conn.cursor()
+# c.execute('select user_id,movie_id,review from reviews limit 100')
+# #500,1000,5000 db
+# #50,100,250,500
+#
+# results=c.fetchall()
+# for i in range(len(results)):
+#     results[i]=list(results[i])
+#
+#
+#
+# for i in results:
+#     os.system("python test.py 500 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
+# for i in results:
+#     os.system("python test.py 1000 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
+# for i in results:
+#     os.system("python test.py 5000 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
+#
+# for i in results:
+#     os.system("python test.py 500 "+str(i[0])+" "+str(i[1])+" 100 "+str(i[2]))
+# for i in results:
+#     os.system("python test.py 1000 "+str(i[0])+" "+str(i[1])+" 100 "+str(i[2]))
+# for i in results:
+#     os.system("python test.py 5000 "+str(i[0])+" "+str(i[1])+" 100 "+str(i[2]))
+#
+# for i in results:
+#     os.system("python test.py 500 "+str(i[0])+" "+str(i[1])+" 250 "+str(i[2]))
+# for i in results:
+#     os.system("python test.py 1000 "+str(i[0])+" "+str(i[1])+" 250 "+str(i[2]))
+# for i in results:
+#     os.system("python test.py 5000 "+str(i[0])+" "+str(i[1])+" 250 "+str(i[2]))
+#
+# for i in results:
+#     os.system("python test.py 500 "+str(i[0])+" "+str(i[1])+" 500 "+str(i[2]))
+# for i in results:
+#     os.system("python test.py 1000 "+str(i[0])+" "+str(i[1])+" 500 "+str(i[2]))
+# for i in results:
+#     os.system("python test.py 5000 "+str(i[0])+" "+str(i[1])+" 500 "+str(i[2]))
+
 conn = sqlite3.connect('top500.db')
 c=conn.cursor()
-c.execute('select user_id,movie_id,review from reviews limit 100')
+c.execute('select user_id,movie_id,review from reviews limit 100 order by movie_id')
 #500,1000,5000 db
 #50,100,250,500
 
 results=c.fetchall()
 for i in range(len(results)):
     results[i]=list(results[i])
+results.sort(key=lambda x: x[1])
+
+movie1=[]
+movie2 = []
+movie3 = []
+for i in range(len(results)):
+    if results[i][1] == 1:
+        movie1.append([results[i][0],results[i][2]])
+    elif results[i][1] == 2:
+        movie2.append([results[i][0],results[i][2]])
+    else:
+        movie3.append([results[i][0],results[i][2]])
 
 
+all_movies = []
+all_movies.append([1,movie1])
+all_movies.append([2,movie2])
+all_movies.append([3,movie3])
+with open("test_movies","wb") as f:
+    pickle.dump(all_movies,f)
 
-for i in results:
-    os.system("python test.py 500 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
+
+os.system("python ENN_dup.py 500 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
 for i in results:
     os.system("python test.py 1000 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
 for i in results:
@@ -42,7 +100,6 @@ for i in results:
     os.system("python test.py 1000 "+str(i[0])+" "+str(i[1])+" 500 "+str(i[2]))
 for i in results:
     os.system("python test.py 5000 "+str(i[0])+" "+str(i[1])+" 500 "+str(i[2]))
-
 
 
 def getRMSE(list1,list2):
@@ -251,4 +308,4 @@ def getRoundedTestScores():
         rmse = getRMSE(actual_500_5000,predicted_500_5000)
         r.write("\n\tFor 5000dB, RMSE is  = " + str(rmse))
 
-getRoundedTestScores()
+#getRoundedTestScores()
