@@ -6,8 +6,8 @@ import math
 import csv
 import pandas
 from exec_db import *
-import pdb
-pdb.set_trace()
+# import pdb
+# pdb.set_trace()
 def getUserReviewClasses(movie_id='', user=''):
    class_1=[]
    class_1=execQuery(query="select distinct user_id from reviews where review=1 and movie_id="+str(movie_id)+ " and user_id<>" + str(user),dB= "top500.db")
@@ -47,29 +47,29 @@ def getUserReviewClasses(movie_id='', user=''):
 
 
 def getCorrelation(user1='', user2=''):
-   with open('allCorrelations.csv','rb') as f:
-       all_corr=pandas.read_csv(f,header=None)
-       for i in range(len(all_corr)):
-           #print i, " in for of getCorrelation"
-           if all_corr.ix[i][0]==int(user1) and all_corr.ix[i][1]==int(user2):
-               corr=all_corr.ix[i][2]
-           elif all_corr.ix[i][0]==int(user2) and all_corr.ix[i][1]==int(user1):
-               corr=all_corr.ix[i][2]
-   return corr
+    # print "users ", user1, "   ", user2
+    with open('allCorrelations.csv','rb') as f:
+        all_corr=pandas.read_csv(f,header=None)
+    d = all_corr[((all_corr[0] == int(user1)) & (all_corr[1] == int(user2)))]
+    if len(d) < 1:
+        d = all_corr[((all_corr[0] == int(user2)) & (all_corr[1] == int(user1)))]
+    corr = d.iloc[0][2]
+    return corr
+
+
 
 def getNearestNeighbours(user=''):
     all_corr=[]
     results=[]
     with open('allCorrelations.csv','rb') as f:
         all_corr=pandas.read_csv(f,header=None)
-        for i in range(len(all_corr)):
-            ##print i, " in for of getNearestNeighbours"
-            if all_corr.ix[i][0]==int(user):
-                #print [ all_corr.ix[i][1], all_corr.ix[i][2]]
-                results.append([ all_corr.ix[i][1], all_corr.ix[i][2]])
-            elif all_corr.ix[i][1]==int(user):
-                #print [ all_corr.ix[i][0], all_corr.ix[i][2]]
-                results.append([all_corr.ix[i][0], all_corr.ix[i][2]])
+    d = all_corr[((all_corr[0] == int(user)) | (all_corr[1] == int(user)))]
+    all_corr = d
+    for i in range(len(all_corr)):
+        if all_corr.iloc[i][0]==int(user):
+            results.append([all_corr.iloc[i][1], all_corr.iloc[i][2]])
+        elif all_corr.iloc[i][1]==int(user):
+             results.append([all_corr.iloc[i][0], all_corr.iloc[i][2]])
     results.sort(key=lambda x: -x[1])
     return results
 
@@ -107,7 +107,7 @@ def getAllNearestNeighbours(class_1=[], class_2=[], class_3=[], class_4=[], clas
         else:
             user_dict['allNeighbours'] = allNeighbours
         class1_data.append(user_dict)
- 
+
     for i in range(len(class_2)):
         #print i, " in for 2 of getAllNearestNeighbours"
         user_dict = {}
@@ -136,7 +136,7 @@ def getAllNearestNeighbours(class_1=[], class_2=[], class_3=[], class_4=[], clas
         else:
             user_dict['allNeighbours'] = allNeighbours
         class2_data.append(user_dict)
- 
+
     for i in range(len(class_3)):
         #print i, " in for 3 of getAllNearestNeighbours"
         user_dict = {}
@@ -165,7 +165,7 @@ def getAllNearestNeighbours(class_1=[], class_2=[], class_3=[], class_4=[], clas
         else:
             user_dict['allNeighbours'] = allNeighbours
         class3_data.append(user_dict)
- 
+
     for i in range(len(class_4)):
         #print i, " in for 4 of getAllNearestNeighbours"
         user_dict = {}
@@ -194,7 +194,7 @@ def getAllNearestNeighbours(class_1=[], class_2=[], class_3=[], class_4=[], clas
         else:
             user_dict['allNeighbours'] = allNeighbours
         class4_data.append(user_dict)
- 
+
     for i in range(len(class_5)):
         #print i, " in for 5 of getAllNearestNeighbours"
         user_dict = {}
@@ -223,14 +223,14 @@ def getAllNearestNeighbours(class_1=[], class_2=[], class_3=[], class_4=[], clas
         else:
             user_dict['allNeighbours'] = allNeighbours
         class5_data.append(user_dict)
- 
+
     return class1_data,class2_data,class3_data,class4_data,class5_data
- 
- 
+
+
 def getDelN(user,class_user,class1_data=[],class2_data=[],class3_data=[],class4_data=[],class5_data=[]):
     delN=[0,0,0,0,0]
     for i in range(len(class1_data)):
-        print i, " in for 1 of getDelN"
+        # print i, " in for 1 of getDelN"
         neighbour=class1_data[i]['allNeighbours'][-1]
         corr=getCorrelation(str(user),str(class1_data[i]['user']))
         if(corr>neighbour[1]):
@@ -244,7 +244,7 @@ def getDelN(user,class_user,class1_data=[],class2_data=[],class3_data=[],class4_
                 else:
                     pass
     for i in range(len(class2_data)):
-        print i, " in for 2 of getDelN"
+        # print i, " in for 2 of getDelN"
         neighbour=class2_data[i]['allNeighbours'][-1]
         corr=getCorrelation(str(user),str(class2_data[i]['user']))
         if(corr>neighbour[1]):
@@ -258,7 +258,7 @@ def getDelN(user,class_user,class1_data=[],class2_data=[],class3_data=[],class4_
                 else:
                     pass
     for i in range(len(class3_data)):
-        print i, " in for 3 of getDelN"
+        # print i, " in for 3 of getDelN"
         neighbour=class3_data[i]['allNeighbours'][-1]
         corr=getCorrelation(str(user),str(class3_data[i]['user']))
         if(corr>neighbour[1]):
@@ -272,7 +272,7 @@ def getDelN(user,class_user,class1_data=[],class2_data=[],class3_data=[],class4_
                 else:
                     pass
     for i in range(len(class4_data)):
-        print i, " in for 4 of getDelN"
+        # print i, " in for 4 of getDelN"
         neighbour=class4_data[i]['allNeighbours'][-1]
         corr=getCorrelation(str(user),str(class4_data[i]['user']))
         if(corr>neighbour[1]):
@@ -287,7 +287,7 @@ def getDelN(user,class_user,class1_data=[],class2_data=[],class3_data=[],class4_
                     pass
 
     for i in range(len(class5_data)):
-        print i, " in for 5 of getDelN"
+        # print i, " in for 5 of getDelN"
         neighbour=class5_data[i]['allNeighbours'][-1]
         corr=getCorrelation(str(user),str(class5_data[i]['user']))
         if(corr>neighbour[1]):
@@ -301,6 +301,7 @@ def getDelN(user,class_user,class1_data=[],class2_data=[],class3_data=[],class4_
                 else:
                     pass
     print delN
+    return delN
 
 
 
@@ -310,25 +311,27 @@ def getNNOne(user,class_1,class_2,class_3, class_4, class_5):
     class_count=[0,0,0,0,0]
     with open('allCorrelations.csv','rb') as f:
         all_corr=pandas.read_csv(f,header=None)
-        for i in range(len(all_corr)):
-            print i, " in for of getNNOne"
-            if all_corr.ix[i][0]==int(user):
-                results.append([ all_corr.ix[i][1], all_corr.ix[i][2]])
-            elif all_corr.ix[i][1]==int(user):
-                 results.append([all_corr.ix[i][0], all_corr.ix[i][2]])
+    d = all_corr[((all_corr[0] == int(user)) | (all_corr[1] == int(user)))]
+    all_corr = d
+    for i in range(len(all_corr)):
+        if i %100 == 99: print i, " in for of getNNOne"
+        if all_corr.iloc[i][0]==int(user):
+            results.append([all_corr.iloc[i][1], all_corr.iloc[i][2]])
+        elif all_corr.iloc[i][1]==int(user):
+             results.append([all_corr.iloc[i][0], all_corr.iloc[i][2]])
     results.sort(key=lambda x: -x[1])
     for i in range(len(results)):
-        if results[i] in class_1:
+        if int(results[i][0]) in class_1:
             class_count[0]+=1
-        elif results[i] in class_2:
+        elif int(results[i][0]) in class_2:
             class_count[1]+=1
-        elif results[i] in class_3:
+        elif int(results[i][0]) in class_3:
             class_count[2]+=1
-        elif results[i] in class_4:
+        elif int(results[i][0]) in class_4:
             class_count[3]+=1
-        elif results[i] in class_5:
+        elif int(results[i][0]) in class_5:
             class_count[4]+=1
-    print class_count
+    print "class count ", class_count
     return class_count
 
 
@@ -397,7 +400,7 @@ def ENN_main(user="", movie="", k= 100):
     #     pickle.dump(class_4,file)
     # with open("class_5","wb") as file:
     #     pickle.dump(class_5,file)
-    
+
     # class1_data,class2_data,class3_data,class4_data,class5_data = getAllNearestNeighbours(class_1,class_2,class_3, class_4, class_5,k)
     with open("class1_data","rb") as file:
         class1_data = pickle.load(file)
@@ -418,17 +421,18 @@ def ENN_main(user="", movie="", k= 100):
     with open("class_4","rb") as file:
         class_4 = pickle.load(file)
     with open("class_5","rb") as file:
-        class_5 = pickle.load(file)    
+        class_5 = pickle.load(file)
+
     ni=[len(class1_data),len(class2_data),len(class3_data),len(class4_data),len(class5_data)]
     rating_power = [0,0,0,0,0]
     stats=getClassStatistics(class1_data,class2_data,class3_data,class4_data,class5_data,k)
+    ki=getNNOne(user,class_1,class_2,class_3,class_4,class_5)
     for j in range(5):
         if stats[j] == 0:
             rating_power[j] = -999
             continue
         temp =0
-        delN=getDelN(user,j,class1_data,class2_data,class3_data,class4_data,class5_data)
-        ki=getNNOne(user,class_1,class_2,class_3,class_4,class_5)
+        delN=getDelN(user,j+1,class1_data,class2_data,class3_data,class4_data,class5_data)
         for i in range(5):
             if(i==j):
                 temp+=delN[i]+ki[i]-k*stats[i]
