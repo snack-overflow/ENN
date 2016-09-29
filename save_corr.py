@@ -8,9 +8,9 @@ c= conn.cursor()
 avg_ratings = pickle.load(open("float_avg_user_rating","rb"))
 
 def getCorrelation(user_i="",user_j=""):
+
     c.execute("SELECT A.movie_id , A.user_id, B.user_id, A.time, B.time, A.review, B.review from (select * from reviews where user_id="+str(user_i)+") as A join (select * from reviews where user_id="+str(user_j)+") as B on A.movie_id=B.movie_id")
     all_results = c.fetchall()
-    conn.commit()
     #print all_results
     mu_i = avg_ratings[int(user_i)]
     mu_j = avg_ratings[int(user_j)]
@@ -33,6 +33,11 @@ def getCorrelation(user_i="",user_j=""):
         return 0.9999
     else:
         return E/temp
+        correlation = E/(sigma_i*sigma_j)
+    # beta = 495
+    # gamma = -2.47
+    #correlation += gamma
+    return correlation
 
 
 
@@ -51,7 +56,7 @@ def saveAllCorrelation():
     for i in range(17,len(user)):
         for j in range(i + 1,len(user)):
             #print user[i],list(all_users[j])[0]
-            print i,j
+            print i+300,j+300
             corr = getCorrelation(user[i],list(all_users[j])[0])
             writer.writerow([i,user[i],list(all_users[j])[0],corr])
 
