@@ -4,15 +4,14 @@ import csv
 import pandas
 import math
 conn = sqlite3.connect("top1000.db")
-
+c= conn.cursor()
+avg_ratings = pickle.load(open("float_avg_user_rating","rb"))
 
 def getCorrelation(user_i="",user_j=""):
-    c= conn.cursor()
     c.execute("SELECT A.movie_id , A.user_id, B.user_id, A.time, B.time, A.review, B.review from (select * from reviews where user_id="+str(user_i)+") as A join (select * from reviews where user_id="+str(user_j)+") as B on A.movie_id=B.movie_id")
     all_results = c.fetchall()
     conn.commit()
     #print all_results
-    avg_ratings = pickle.load(open("float_avg_user_rating","rb"))
     mu_i = avg_ratings[int(user_i)]
     mu_j = avg_ratings[int(user_j)]
     M = len(all_results)
@@ -29,14 +28,11 @@ def getCorrelation(user_i="",user_j=""):
     sigma_j/=M
     sigma_i = math.sqrt(sigma_i)
     sigma_j = math.sqrt(sigma_j)
-    if sigma_i == 0 or sigma_j == 0:
-        correlation= 0.9999
+    temp = sigma_i*sigma_j
+    if temp == 0:
+        return 0.9999
     else:
-        correlation = E/(sigma_i*sigma_j)
-    beta = 495
-    gamma = -2.47
-    #correlation += gamma
-    return correlation
+        return E/temp
 
 
 
@@ -46,18 +42,18 @@ def getCorrelation(user_i="",user_j=""):
 def saveAllCorrelation():
     with open("top_1000_users","rb") as f:
         all_users = pickle.load(f)
-    file = open("allCorrelationsFrom800.csv","a+b")
+    file = open("allCorrelationsFrom1.csv","a+b")
     writer = csv.writer(file)
     user=[]
-    for i in range(800,len(all_users)):
+    for i in range(len(all_users)):
         user.append(list(all_users[i])[0])
 
-    for i in range(len(user)):
+    for i in range(17,len(user)):
         for j in range(i + 1,len(user)):
             #print user[i],list(all_users[j])[0]
-            print i+800,j+800
+            print i,j
             corr = getCorrelation(user[i],list(all_users[j])[0])
-            writer.writerow([user[i],list(all_users[j])[0],corr])
+            writer.writerow([i,user[i],list(all_users[j])[0],corr])
 
 
     file.close()
