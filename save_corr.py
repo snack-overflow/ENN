@@ -47,18 +47,18 @@ def getCorrelation(user_i="",user_j=""):
 def saveAllCorrelation():
     with open("top_1000_users","rb") as f:
         all_users = pickle.load(f)
-    file = open("allCorrelationsFrom1.csv","a+b")
+    file = open("allCorrelationsFrom519.csv","a+b")
     writer = csv.writer(file)
     user=[]
     for i in range(len(all_users)):
         user.append(list(all_users[i])[0])
 
-    for i in range(17,len(user)):
+    for i in range(519,len(user)):
         for j in range(i + 1,len(user)):
             #print user[i],list(all_users[j])[0]
-            print i+300,j+300
-            corr = getCorrelation(user[i],list(all_users[j])[0])
-            writer.writerow([i,user[i],list(all_users[j])[0],corr])
+            print i,j
+            corr = getCorrelation(user[i],user[j])
+            writer.writerow([i,user[i],user[j],corr])
 
 
     file.close()
