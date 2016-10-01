@@ -393,55 +393,17 @@ def getClassStatistics(class1_data = [],class2_data =[],class3_data=[],class4_da
     return stats
 
 
-def ENN_main(db=500, k= 100):
-    with open("test_movies","rb") as f:
-        test_movies = pickle.load(f)
+def ENN_main(user='',movie='',db=500, k= 100):
 
     for i in range(len(test_movies)):
         movie = test_movies[i][0]
         all_users = test_movies[i][1]
-        # class_1,class_2,class_3, class_4, class_5 =  getUserReviewClasses(movie,str(db))
-        # print "getUserReviewClasses done"
-        # with open("class_1","wb") as file:
-        #     pickle.dump(class_1,file)
-        # with open("class_2","wb") as file:
-        #     pickle.dump(class_2,file)
-        # with open("class_3","wb") as file:
-        #     pickle.dump(class_3,file)
-        # with open("class_4","wb") as file:
-        #     pickle.dump(class_4,file)
-        # with open("class_5","wb") as file:
-        #     pickle.dump(class_5,file)
-
-        # class1_data,class2_data,class3_data,class4_data,class5_data = getAllNearestNeighbours(class_1,class_2,class_3, class_4, class_5,k)
-        # print "getAllNearestNeighbours done"
-        # with open("class1_data","rb") as file:
-        #     class1_data = pickle.load(file)
-        # with open("class2_data","rb") as file:
-        #     class2_data = pickle.load(file)
-        # with open("class3_data","rb") as file:
-        #     class3_data = pickle.load(file)
-        # with open("class4_data","rb") as file:
-        #     class4_data = pickle.load(file)
-        # with open("class5_data","rb") as file:
-        #     class5_data = pickle.load(file)
-        # with open("class_1","rb") as file:
-        #     class_1 = pickle.load(file)
-        # with open("class_2","rb") as file:
-        #     class_2 = pickle.load(file)
-        # with open("class_3","rb") as file:
-        #     class_3 = pickle.load(file)
-        # with open("class_4","rb") as file:
-        #     class_4 = pickle.load(file)
-        # with open("class_5","rb") as file:
-        #     class_5 = pickle.load(file)
-
 
         # generating copies of all variables to restore them for every user
         for data in all_users:
             user = data[0]
             class_1,class_2,class_3, class_4, class_5 =  getUserReviewClasses(movie,str(db), user)
-            print "getUserReviewClasses done"
+
             flag = []
             if len(class_1) == 0:
                 flag.append(0)
@@ -454,7 +416,6 @@ def ENN_main(db=500, k= 100):
             elif len(class_5) == 0:
                 flag.append(4)
             class1_data,class2_data,class3_data,class4_data,class5_data = getAllNearestNeighbours(class_1,class_2,class_3, class_4, class_5,k)
-            print "getAllNearestNeighbours done"
 
             ni=[len(class1_data),len(class2_data),len(class3_data),len(class4_data),len(class5_data)]
             rating_power = [0,0,0,0,0]
