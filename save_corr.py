@@ -53,7 +53,7 @@ def saveAllCorrelation():
     for i in range(len(all_users)):
         user.append(list(all_users[i])[0])
 
-    for i in range(519,len(user)):
+    for i in range(531,len(user)):
         for j in range(i + 1,len(user)):
             #print user[i],list(all_users[j])[0]
             print i,j
