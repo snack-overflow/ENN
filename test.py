@@ -33,17 +33,48 @@ def getRMSE(list1,list2):
     return error
 
 
-with open('allCorrelationsFrom1.csv','rb') as f:
-    all_corr=pandas.read_csv(f,header=None)
-def getCorrelation(user1='', user2=''):
 
-    d = all_corr[((all_corr[0] == int(user1)) & (all_corr[1] == int(user2)))]
-    if len(d) < 1:
-        d = all_corr[((all_corr[0] == int(user2)) & (all_corr[1] == int(user1)))]
-    corr = d.iloc[0][2]
-    # print "\ncorr of",user1,user2,corr,"\n"
-    return corr
-    #print avg_i,avg_j
+def getCorrelation(user_i="",user_j=""):
+   c= conn.cursor()
+   c.execute("SELECT A.movie_id , A.user_id, B.user_id, A.time, B.time, A.review, B.review from (select * from reviews where user_id=387418) as A join (select * from reviews where user_id=387418) as B on A.movie_id=B.movie_id")
+   all_results = c.fetchall()
+   conn.commit()
+   #print all_results
+   avg_ratings = pickle.load(open("float_avg_user_rating","rb"))
+   mu_i = avg_ratings[int(user_i)]
+   mu_j = avg_ratings[int(user_j)]
+   M = len(all_results)
+   sigma_i =0
+   sigma_j = 0
+   E = 0
+   for row in all_results:
+       del_t = -abs(row[3]-row[4])
+       E += (row[5] - mu_i) * (row[6] - mu_j)*math.exp(del_t/4959393420)
+       sigma_i += math.pow((row[5] - mu_i),2)
+       sigma_j += math.pow((row[6] - mu_j),2)
+   E/=M
+   sigma_i/=M
+   sigma_j/=M
+   sigma_i = math.sqrt(sigma_i)
+   sigma_j = math.sqrt(sigma_j)
+   correlation = E/(sigma_i*sigma_j)
+   beta = 495
+   gamma = -2.47
+   #correlation += gamma
+   return correlation
+
+
+# with open('allCorrelationsFrom1.csv','rb') as f:
+#     all_corr=pandas.read_csv(f,header=None)
+# def getCorrelation(user1='', user2=''):
+#
+#     d = all_corr[((all_corr[0] == int(user1)) & (all_corr[1] == int(user2)))]
+#     if len(d) < 1:
+#         d = all_corr[((all_corr[0] == int(user2)) & (all_corr[1] == int(user1)))]
+#     corr = d.iloc[0][2]
+#     # print "\ncorr of",user1,user2,corr,"\n"
+#     return corr
+#     #print avg_i,avg_j
 
 
 

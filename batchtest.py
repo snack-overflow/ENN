@@ -5,7 +5,7 @@ import pickle
 import math
 conn = sqlite3.connect('top500.db')
 c=conn.cursor()
-c.execute('select user_id,movie_id,review from reviews')
+c.execute('select user_id,movie_id,review from reviews limit 500')
 #500,1000,5000 db
 #50,100,250,500
 
@@ -16,9 +16,9 @@ for i in range(len(results)):
 
 
 for i in results:
-    os.system("python test.py 500 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
+     os.system("python test.py 500 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
 for i in results:
-    os.system("python test.py 1000 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
+     os.system("python test.py 1000 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
 for i in results:
     os.system("python test.py 5000 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
 

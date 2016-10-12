@@ -434,14 +434,14 @@ def ENN_main(user='',movie='',db=500, k= 100):
                     if i in flag:
                         continue
                     if(i==j):
-                        print '\n',temp,"+=",delN[i],"+",ki[i],"-",k,"*",stats[i]
+                        #print '\n',temp,"+=",delN[i],"+",ki[i],"-",k,"*",stats[i]
                         temp+=delN[i]+ki[i]-k*stats[i]
-                        print '\n',temp,"/=","((",ni[i],"+",1,")*",k,")"
+                        #print '\n',temp,"/=","((",ni[i],"+",1,")*",k,")"
                         temp/=((ni[i]+1)*k)
                     else:
-                        print temp,"+=","(",delN[i],"/(",ni[i],"*",k,"))"
+                        #print temp,"+=","(",delN[i],"/(",ni[i],"*",k,"))"
                         temp+=(1.0*delN[i])/(ni[i]*k)
-                print "\nrating power of",j,temp
+                #print "\nrating power of",j,temp
                 rating_power[j]=temp
             print "\nrating power\n",rating_power
             rating = (rating_power.index(max(rating_power))+1)
@@ -450,12 +450,15 @@ def ENN_main(user='',movie='',db=500, k= 100):
                 writer.writerow([user, movie,float(str(rating)),float(data[1]), int(db),int(k)])
             print user, movie,float(str(rating)),float(data[1]), int(db),int(k)
             # print "Final rating is ", rating
-import datetime
-with open("exec_time.txt","wt") as f:
-    st = datetime.datetime.now()
-    f.write("Starting time: " + str(st))
-    ENN_main(500,50)
-    e1 = datetime.datetime.now()
+
+ENN_main(user=)
+
+#import datetime
+#with open("exec_time.txt","wt") as f:
+#    st = datetime.datetime.now()
+ #   f.write("Starting time: " + str(st))
+  #  ENN_main(500,50)
+  #  e1 = datetime.datetime.now()
     f.write("After 500,50.... time: " + str(e1) + "elapsed: " + str(e1-st))
     # ENN_main(500,100)
     # e2 = datetime.datetime.now()
