@@ -3,6 +3,7 @@ import sqlite3
 import pickle
 import math
 #import test
+import sys
 import csv
 import pandas
 from exec_db import *
@@ -41,7 +42,7 @@ def getUserReviewClasses(movie_id='', data="500",user=''):
     for i in range(len(class_5)):
        #print i, " in for 5 of getUserReviewClasses"
        class_5[i]=list(class_5[i])[0]
-    print "\nClass_1:\n",class_1,"\nClass_2:\n",class_2,"\nClass_3:\n",class_3,"\nClass_4:\n",class_4,"\nClass_5:\n",class_5
+    # print "\nClass_1:\n",class_1,"\nClass_2:\n",class_2,"\nClass_3:\n",class_3,"\nClass_4:\n",class_4,"\nClass_5:\n",class_5
     return class_1,class_2,class_3,class_4,class_5
 
 
@@ -72,7 +73,7 @@ def getNearestNeighbours(user=''):
         elif all_corr.iloc[i][1]==int(user):
              results.append([all_corr.iloc[i][0], all_corr.iloc[i][2]])
     results.sort(key=lambda x: -x[1])
-    print "\nnearest neighbours of user \n",user,"\n", results
+    # print "\nnearest neighbours of user \n",user,"\n", results
     return results
 
 def getAllNearestNeighbours(class_1=[], class_2=[], class_3=[], class_4=[], class_5=[],k=50):
@@ -225,7 +226,7 @@ def getAllNearestNeighbours(class_1=[], class_2=[], class_3=[], class_4=[], clas
         else:
             user_dict['allNeighbours'] = allNeighbours
         class5_data.append(user_dict)
-    print "\nclass1_data\n",class1_data,"\nclass2_data\n",class2_data,"\nclass3_data\n",class3_data,"\nclass4_data\n",class4_data,"\nclass5_data\n",class5_data
+    # print "\nclass1_data\n",class1_data,"\nclass2_data\n",class2_data,"\nclass3_data\n",class3_data,"\nclass4_data\n",class4_data,"\nclass5_data\n",class5_data
     return class1_data,class2_data,class3_data,class4_data,class5_data
 
 
@@ -302,7 +303,7 @@ def getDelN(user,class_user,class1_data=[],class2_data=[],class3_data=[],class4_
                     delN[4]+=1
                 else:
                     pass
-    print "\ndelN\n", delN
+    # print "\ndelN\n", delN
     return delN
 
 
@@ -335,7 +336,7 @@ def getNNOne(user,class_1,class_2,class_3, class_4, class_5,k=50):
             class_count[3]+=1
         elif int(results[i][0]) in class_5:
             class_count[4]+=1
-    print "\nclass count\n", class_count
+    # print "\nclass count\n", class_count
     return class_count
 
 
@@ -389,65 +390,62 @@ def getClassStatistics(class1_data = [],class2_data =[],class3_data=[],class4_da
             stats[i]=0
         else:
             stats[i]/=n[i]
-    print "\nstats\n", stats
+    # print "\nstats\n", stats
     return stats
 
 
-def ENN_main(user='',movie='',db=500, k= 100):
-
+def ENN_main(user='',movie='',db=500, k= 100,rat = 3):
         # generating copies of all variables to restore them for every user
-        for data in all_users:
-            user = data[0]
-            class_1,class_2,class_3, class_4, class_5 =  getUserReviewClasses(movie,str(db), user)
+    k = int(k)
+    class_1,class_2,class_3, class_4, class_5 =  getUserReviewClasses(movie,str(db), user)
+    flag = []
+    if len(class_1) == 0:
+        flag.append(0)
+    elif len(class_2) == 0:
+        flag.append(1)
+    elif len(class_3) == 0:
+        flag.append(2)
+    elif len(class_4) == 0:
+        flag.append(3)
+    elif len(class_5) == 0:
+        flag.append(4)
+    class1_data,class2_data,class3_data,class4_data,class5_data = getAllNearestNeighbours(class_1,class_2,class_3, class_4, class_5,k)
 
-            flag = []
-            if len(class_1) == 0:
-                flag.append(0)
-            elif len(class_2) == 0:
-                flag.append(1)
-            elif len(class_3) == 0:
-                flag.append(2)
-            elif len(class_4) == 0:
-                flag.append(3)
-            elif len(class_5) == 0:
-                flag.append(4)
-            class1_data,class2_data,class3_data,class4_data,class5_data = getAllNearestNeighbours(class_1,class_2,class_3, class_4, class_5,k)
-
-            ni=[len(class1_data),len(class2_data),len(class3_data),len(class4_data),len(class5_data)]
-            rating_power = [0,0,0,0,0]
-            stats=getClassStatistics(class1_data,class2_data,class3_data,class4_data,class5_data,k)
-            ki=getNNOne(user,class_1,class_2,class_3,class_4,class_5)
-            for j in range(5):
-                if j in flag:
-                    continue
-                if stats[j] == 0:
-                    rating_power[j] = -999
-                    continue
-                temp =0
-                delN=getDelN(user,j+1,class1_data,class2_data,class3_data,class4_data,class5_data)
-                for i in range(5):
-                    print i,j
-                    if i in flag:
-                        continue
-                    if(i==j):
-                        #print '\n',temp,"+=",delN[i],"+",ki[i],"-",k,"*",stats[i]
-                        temp+=delN[i]+ki[i]-k*stats[i]
-                        #print '\n',temp,"/=","((",ni[i],"+",1,")*",k,")"
-                        temp/=((ni[i]+1)*k)
-                    else:
-                        #print temp,"+=","(",delN[i],"/(",ni[i],"*",k,"))"
-                        temp+=(1.0*delN[i])/(ni[i]*k)
-                #print "\nrating power of",j,temp
-                rating_power[j]=temp
-            print "\nrating power\n",rating_power
-            rating = (rating_power.index(max(rating_power))+1)
-            with open("ENN_test_data.csv", "a+b") as f:
-                writer = csv.writer(f)
-                writer.writerow([user, movie,float(str(rating)),float(data[1]), int(db),int(k)])
-            print user, movie,float(str(rating)),float(data[1]), int(db),int(k)
+    ni=[len(class1_data),len(class2_data),len(class3_data),len(class4_data),len(class5_data)]
+    rating_power = [0,0,0,0,0]
+    stats=getClassStatistics(class1_data,class2_data,class3_data,class4_data,class5_data,k)
+    ki=getNNOne(user,class_1,class_2,class_3,class_4,class_5)
+    for j in range(5):
+        if j in flag:
+            continue
+        if stats[j] == 0:
+            rating_power[j] = -999
+            continue
+        temp =0
+        delN=getDelN(user,j+1,class1_data,class2_data,class3_data,class4_data,class5_data)
+        for i in range(5):
+            # print i,j
+            if i in flag:
+                continue
+            if(i==j):
+                #print '\n',temp,"+=",delN[i],"+",ki[i],"-",k,"*",stats[i]
+                temp+=delN[i]+ki[i]-k*stats[i]
+                #print '\n',temp,"/=","((",ni[i],"+",1,")*",k,")"
+                temp/=((ni[i]+1)*k)
+            else:
+                #print temp,"+=","(",delN[i],"/(",ni[i],"*",k,"))"
+                temp+=(1.0*delN[i])/(ni[i]*k)
+        #print "\nrating power of",j,temp
+        rating_power[j]=temp
+    # print "\nrating power\n",rating_power
+    rating = (rating_power.index(max(rating_power))+1)
+    with open("ENN_test_data.csv", "a+b") as f:
+        writer = csv.writer(f)
+        writer.writerow([user, movie,float(str(rating)),float(rat), int(db),int(k)])
+    print user, movie,float(str(rating)),float(rat), int(db),int(k)
             # print "Final rating is ", rating
 
-ENN_main(user=)
+ENN_main(user= sys.argv[2],movie=sys.argv[3],db=sys.argv[1],k=sys.argv[4],rat = sys.argv[5])
 
 #import datetime
 #with open("exec_time.txt","wt") as f:
@@ -455,7 +453,7 @@ ENN_main(user=)
  #   f.write("Starting time: " + str(st))
   #  ENN_main(500,50)
   #  e1 = datetime.datetime.now()
-    f.write("After 500,50.... time: " + str(e1) + "elapsed: " + str(e1-st))
+    # f.write("After 500,50.... time: " + str(e1) + "elapsed: " + str(e1-st))
     # ENN_main(500,100)
     # e2 = datetime.datetime.now()
     # f.write("After 500,100.... time: " + str(e2) + "elapsed: " + str(e2-e1))
