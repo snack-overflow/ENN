@@ -396,6 +396,12 @@ def getClassStatistics(class1_data = [],class2_data =[],class3_data=[],class4_da
 
 def ENN_main(user='',movie='',db=500, k= 100,rat = 3):
         # generating copies of all variables to restore them for every user
+    with open("ENN_test_data.csv", "a+b") as f:
+        file = pandas.read_csv(f,header=None)
+        exists = file[((file[0] == int(user)) & (file[1] == int(movie)))]
+        if len(exists) > 0:
+            print "return"
+            return
     k = int(k)
     class_1,class_2,class_3, class_4, class_5 =  getUserReviewClasses(movie,str(db), user)
     flag = []
