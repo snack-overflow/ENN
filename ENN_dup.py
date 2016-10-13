@@ -395,10 +395,6 @@ def getClassStatistics(class1_data = [],class2_data =[],class3_data=[],class4_da
 
 def ENN_main(user='',movie='',db=500, k= 100):
 
-    for i in range(len(test_movies)):
-        movie = test_movies[i][0]
-        all_users = test_movies[i][1]
-
         # generating copies of all variables to restore them for every user
         for data in all_users:
             user = data[0]
