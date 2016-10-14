@@ -15,8 +15,8 @@ for i in range(len(results)):
 
 
 
-for i in results:
-     os.system("python ENN_dup.py 500 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
+# for i in results:
+#      os.system("python ENN_dup.py 500 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
 for i in results:
      os.system("python ENN_dup.py 1000 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
 for i in results:

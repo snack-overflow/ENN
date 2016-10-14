@@ -49,7 +49,7 @@ def getUserReviewClasses(movie_id='', data="500",user=''):
 
 def getCorrelation(user1='', user2=''):
     # print "users ", user1, "   ", user2
-    with open('allCorrelations.csv','rb') as f:
+    with open('allCorrelationsFrom1.csv','rb') as f:
         all_corr=pandas.read_csv(f,header=None)
     d = all_corr[((all_corr[0] == int(user1)) & (all_corr[1] == int(user2)))]
     if len(d) < 1:
@@ -63,7 +63,7 @@ def getCorrelation(user1='', user2=''):
 def getNearestNeighbours(user=''):
     all_corr=[]
     results=[]
-    with open('allCorrelations.csv','rb') as f:
+    with open('allCorrelationsFrom1.csv','rb') as f:
         all_corr=pandas.read_csv(f,header=None)
     d = all_corr[((all_corr[0] == int(user)) | (all_corr[1] == int(user)))]
     all_corr = d
@@ -312,7 +312,7 @@ def getNNOne(user,class_1,class_2,class_3, class_4, class_5,k=50):
     all_corr=[]
     results=[]
     class_count=[0,0,0,0,0]
-    with open('allCorrelations.csv','rb') as f:
+    with open('allCorrelationsFrom1.csv','rb') as f:
         all_corr=pandas.read_csv(f,header=None)
     d = all_corr[((all_corr[0] == int(user)) | (all_corr[1] == int(user)))]
     all_corr = d
@@ -398,7 +398,8 @@ def ENN_main(user='',movie='',db=500, k= 100,rat = 3):
         # generating copies of all variables to restore them for every user
     with open("ENN_test_data.csv", "a+b") as f:
         file = pandas.read_csv(f,header=None)
-        exists = file[((file[0] == int(user)) & (file[1] == int(movie)))]
+        exists = file[(file[0] == int(user)) & (file[1] == int(movie)) & (file[4] == int(db)) & (file[5] == int(k))]
+        # (((file[0] == int(user)) & (file[1] == int(movie))) & ((file[4] == int(db)) & (file[5] == int(k)))
         if len(exists) > 0:
             print "return"
             return
