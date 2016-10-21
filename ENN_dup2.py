@@ -396,7 +396,7 @@ def getClassStatistics(class1_data = [],class2_data =[],class3_data=[],class4_da
 
 def ENN_main(user='',movie='',db=500, k= 100,rat = 3):
         # generating copies of all variables to restore them for every user
-    with open("ENN_test_data.csv", "a+b") as f:
+    with open("ENN_test_data2.csv", "a+b") as f:
         file = pandas.read_csv(f,header=None)
         exists = file[(file[0] == int(user)) & (file[1] == int(movie)) & (file[4] == int(db)) & (file[5] == int(k))]
         # (((file[0] == int(user)) & (file[1] == int(movie))) & ((file[4] == int(db)) & (file[5] == int(k)))
@@ -446,7 +446,7 @@ def ENN_main(user='',movie='',db=500, k= 100,rat = 3):
         rating_power[j]=temp
     # print "\nrating power\n",rating_power
     rating = (rating_power.index(max(rating_power))+1)
-    with open("ENN_test_data.csv", "a+b") as f:
+    with open("ENN_test_data2.csv", "a+b") as f:
         writer = csv.writer(f)
         writer.writerow([user, movie,float(str(rating)),float(rat), int(db),int(k)])
     print user, movie,float(str(rating)),float(rat), int(db),int(k)

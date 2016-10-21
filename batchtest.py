@@ -17,31 +17,37 @@ for i in range(len(results)):
 
 # for i in results:
 #      os.system("python ENN_dup.py 500 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
+count = 0
 for i in results:
-     os.system("python ENN_dup.py 1000 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
-for i in results:
-    os.system("python ENN_dup.py 5000 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
+    print count
+    count+=1
+    os.system("python ENN_dup.py 1000 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
+# for i in results:
+#     os.system("python ENN_dup.py 5000 "+str(i[0])+" "+str(i[1])+" 50 "+str(i[2]))
 
 for i in results:
     os.system("python ENN_dup.py 500 "+str(i[0])+" "+str(i[1])+" 100 "+str(i[2]))
+count =0
 for i in results:
+    print count
+    count+=1
     os.system("python ENN_dup.py 1000 "+str(i[0])+" "+str(i[1])+" 100 "+str(i[2]))
-for i in results:
-    os.system("python ENN_dup.py 5000 "+str(i[0])+" "+str(i[1])+" 100 "+str(i[2]))
+# for i in results:
+#     os.system("python ENN_dup.py 5000 "+str(i[0])+" "+str(i[1])+" 100 "+str(i[2]))
 
 for i in results:
     os.system("python ENN_dup.py 500 "+str(i[0])+" "+str(i[1])+" 250 "+str(i[2]))
 for i in results:
     os.system("python ENN_dup.py 1000 "+str(i[0])+" "+str(i[1])+" 250 "+str(i[2]))
-for i in results:
-    os.system("python ENN_dup.py 5000 "+str(i[0])+" "+str(i[1])+" 250 "+str(i[2]))
+# for i in results:
+#     os.system("python ENN_dup.py 5000 "+str(i[0])+" "+str(i[1])+" 250 "+str(i[2]))
 
 for i in results:
     os.system("python ENN_dup.py 500 "+str(i[0])+" "+str(i[1])+" 500 "+str(i[2]))
 for i in results:
     os.system("python ENN_dup.py 1000 "+str(i[0])+" "+str(i[1])+" 500 "+str(i[2]))
-for i in results:
-    os.system("python ENN_dup.py 5000 "+str(i[0])+" "+str(i[1])+" 500 "+str(i[2]))
+# for i in results:
+#     os.system("python ENN_dup.py 5000 "+str(i[0])+" "+str(i[1])+" 500 "+str(i[2]))
 
 
 def getRMSE(list1,list2):
