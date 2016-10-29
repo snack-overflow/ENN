@@ -1,2 +1,0 @@
-getNNone should return top k neighbours of z
-2256485 most error
